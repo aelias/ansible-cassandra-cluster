@@ -1,0 +1,87 @@
+---
+- name: Stop Cassandra Service
+  service: 
+    name: cassandra
+    state: stopped
+  tags:
+    - service
+
+- name: Collect files/directories names
+  shell: ls -1 /var/lib/cassandra/data/system/
+  register: files_names
+  notify:
+    - restart cassandra servers
+  tags:
+    - service
+
+- debug: var=files_names.stdout_lines
+  tags:
+    - service
+
+- name: Remove Cassandra default configuration
+  file: 
+    path: /var/lib/cassandra/data/system/{{ item }}
+    state: absent
+  with_items: "{{ files_names.stdout_lines }}"
+  when: files_names.stdout_lines is defined
+  notify:
+    - restart cassandra servers
+  tags:
+    - service
+
+#    - name: Gather EC2 facts
+#      ec2_facts:
+# ansible_ec2_local_ipv4 (for local ip address)
+# ansible_ec2_public_ipv4 (for public ip address)
+
+- name: Change ClusterName for Cassandra
+  lineinfile: 
+    path: "{{ cassandra_cfg_file }}"
+    regexp: "^cluster_name:*"
+    line: "cluster_name: 'Orionhelth'"
+  notify:
+    - restart cassandra servers
+
+- name: Change cassandra seeds
+  replace:
+    path:  "{{ cassandra_cfg_file }}"
+    regexp: "- seeds: \"[1-9].*\""
+    replace: "- seeds: \"{{ cassandra_seeds | join(',') }}\""
+    backup: yes
+  notify:
+    - restart cassandra servers
+
+- debug: var=ansible_eth0
+- debug: var=ansible_default_ipv4.address
+
+- name: Change listen_address
+  lineinfile: 
+    path: "{{ cassandra_cfg_file }}"
+    regexp: "^listen_address:*"
+    line: "listen_address: \"{{ ansible_default_ipv4.address }}\""
+  notify:
+    - restart cassandra servers
+
+- name: Change rpc_address
+  lineinfile: 
+    path: "{{ cassandra_cfg_file }}"
+    regexp: "^rpc_address:*"
+    line: "rpc_address: \"{{ ansible_default_ipv4.address }}\""
+  notify:
+    - restart cassandra servers
+
+- name: Change endpoint_snitch
+  lineinfile: 
+    path: "{{ cassandra_cfg_file }}"
+    regexp: "^endpoint_snitch:*"
+    line: "endpoint_snitch: GossipingPropertyFileSnitch"
+  notify:
+    - restart cassandra servers
+
+- name: Add bootom line
+  lineinfile:
+    path: "{{ cassandra_cfg_file }}"
+    insertafter: EOF
+    line: "auto_bootstrap: false"
+  notify:
+    - restart cassandra servers

@@ -1,0 +1,8 @@
+---
+- name: Ensure Python 2.7 is installed in AWS Ubuntu
+  raw: apt-get install -y python2.7 python-simplejson
+  become: True
+
+- name: Install add-apt-repostory
+  become: yes
+  apt: name=software-properties-common state=latest

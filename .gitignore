@@ -1,0 +1,7 @@
+# Ignore testing files
+control.yml
+cassandra.yaml
+tests.yml
+key-pair/
+*.retry
+playbooks/

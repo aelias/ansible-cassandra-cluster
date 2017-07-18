@@ -1,0 +1,20 @@
+---
+- hosts: control
+  gather_facts: false
+  become: yes
+  roles:
+    - control
+
+- hosts: cassandra
+  any_errors_fatal: true
+  gather_facts: false
+  become: true
+  roles:
+    - ubuntu
+
+- hosts: cassandra
+  any_errors_fatal: true
+  gather_facts: yes
+  become: true
+  roles:
+    - cassandra

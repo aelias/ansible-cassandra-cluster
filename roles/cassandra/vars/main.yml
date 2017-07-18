@@ -1,0 +1,16 @@
+---
+# vars file for cassandra
+#############################
+
+# Cassandra nodes private IPs
+# Used for defining seeds
+cassandra_seeds:
+    - 10.10.1.90
+    - 10.10.1.101
+
+# Cassandra nodes, that are no seeds
+cassandra_no_seeds:
+    - 10.10.1.71
+
+# Cassandra configuration file
+cassandra_cfg_file: /etc/cassandra/cassandra.yaml

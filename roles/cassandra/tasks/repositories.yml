@@ -1,0 +1,22 @@
+---
+- name: Add java repository
+  apt_repository:
+          repo: 'ppa:webupd8team/java'
+          state: present
+  tags:
+    - prepare
+
+- name: Add Cassandra repository
+  apt_repository:
+          repo: deb http://www.apache.org/dist/cassandra/debian 311x main
+          state: present 
+          filename: 'cassandra.sources.list'
+  tags: 
+    - prepare
+
+- name: Add Cassandra repository key
+  apt_key: 
+      keyserver: pool.sks-keyservers.net
+      id: A278B781FE4B2BDA
+  tags:
+    - prepare
