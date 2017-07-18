@@ -14,9 +14,6 @@
   tags:
     - service
 
-- debug: var=files_names.stdout_lines
-  tags:
-    - service
 
 - name: Remove Cassandra default configuration
   file: 
@@ -38,7 +35,7 @@
   lineinfile: 
     path: "{{ cassandra_cfg_file }}"
     regexp: "^cluster_name:*"
-    line: "cluster_name: 'Orionhelth'"
+    line: "cluster_name: '{{ cassandra_cluster_name }}'"
   notify:
     - restart cassandra servers
 
@@ -51,8 +48,6 @@
   notify:
     - restart cassandra servers
 
-- debug: var=ansible_eth0
-- debug: var=ansible_default_ipv4.address
 
 - name: Change listen_address
   lineinfile: 

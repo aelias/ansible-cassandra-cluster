@@ -14,3 +14,6 @@ cassandra_no_seeds:
 
 # Cassandra configuration file
 cassandra_cfg_file: /etc/cassandra/cassandra.yaml
+
+# Cassandra cluster name
+cassandra_cluster_name: Orionhelth
