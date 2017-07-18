@@ -22,5 +22,5 @@ Just execute: *ansible-playbook site.yml --ask-vault-pass*, and wait for the res
 - https://www.digitalocean.com/community/tutorials/how-to-run-a-multi-node-cluster-database-with-cassandra-on-ubuntu-14-04
 - http://docs.datastax.com/en/cassandra/3.0/cassandra/initialize/initSingleDS.html
 - http://docs.ansible.com
-- 
+ 
 Enjoy!
