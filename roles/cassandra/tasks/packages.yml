@@ -2,7 +2,7 @@
 - name: Update cache before install
   apt:
     update_cache: yes
-    cache_valid_time: 3600 # 5 minutos
+    cache_valid_time: 3600 # 5 minutes
   tags:
     - install
 
