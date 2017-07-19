@@ -19,6 +19,7 @@ Just execute: *ansible-playbook site.yml --ask-vault-pass*, and wait for the res
 ## Notes:
 - The vault password is for my machine, so, in order to make it work in other machine, you have to create a new vault file (inside group_vars/control), with your own password, and inside it, a variable called: *control_sudo_pass* that contains your sudo password.
 ## Links for reference
+- cassandra.apache.org
 - https://www.digitalocean.com/community/tutorials/how-to-run-a-multi-node-cluster-database-with-cassandra-on-ubuntu-14-04
 - http://docs.datastax.com/en/cassandra/3.0/cassandra/initialize/initSingleDS.html
 - http://docs.ansible.com
