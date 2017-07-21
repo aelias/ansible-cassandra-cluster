@@ -31,52 +31,16 @@
 # ansible_ec2_local_ipv4 (for local ip address)
 # ansible_ec2_public_ipv4 (for public ip address)
 
-- name: Change ClusterName for Cassandra
-  lineinfile: 
-    path: "{{ cassandra_cfg_file }}"
-    regexp: "^cluster_name:*"
-    line: "cluster_name: '{{ cassandra_cluster_name }}'"
-  notify:
-    - restart cassandra servers
-
-- name: Change cassandra seeds
-  replace:
-    path:  "{{ cassandra_cfg_file }}"
-    regexp: "- seeds: \"[1-9].*\""
-    replace: "- seeds: \"{{ cassandra_seeds | join(',') }}\""
+- name: Creating cassandra config file from template  
+  template: 
     backup: yes
+    src: cassandra.yaml.j2
+    dest: "{{ cassandra_cfg_file }}"
+    group: root
+    owner: root
+    mode: 0644
+  tags:
+    - service
   notify:
     - restart cassandra servers
-
-
-- name: Change listen_address
-  lineinfile: 
-    path: "{{ cassandra_cfg_file }}"
-    regexp: "^listen_address:*"
-    line: "listen_address: \"{{ ansible_default_ipv4.address }}\""
-  notify:
-    - restart cassandra servers
-
-- name: Change rpc_address
-  lineinfile: 
-    path: "{{ cassandra_cfg_file }}"
-    regexp: "^rpc_address:*"
-    line: "rpc_address: \"{{ ansible_default_ipv4.address }}\""
-  notify:
-    - restart cassandra servers
-
-- name: Change endpoint_snitch
-  lineinfile: 
-    path: "{{ cassandra_cfg_file }}"
-    regexp: "^endpoint_snitch:*"
-    line: "endpoint_snitch: GossipingPropertyFileSnitch"
-  notify:
-    - restart cassandra servers
-
-- name: Add bootom line
-  lineinfile:
-    path: "{{ cassandra_cfg_file }}"
-    insertafter: EOF
-    line: "auto_bootstrap: false"
-  notify:
-    - restart cassandra servers
+        
